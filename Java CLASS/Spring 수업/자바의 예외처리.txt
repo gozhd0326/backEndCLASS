@@ -1,0 +1,6 @@
+<자바의 예외처리>
+Exception Handling
+-자바는 수많은 예외 케이스를 정의해놓음.
+
+개발자 구현 예외처리(커스텀)
+ResourceNotFoundException

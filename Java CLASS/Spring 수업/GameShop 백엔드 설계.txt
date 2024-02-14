@@ -1,0 +1,10 @@
+<GameShop 백엔드 설계>
+group id : com.dw
+artifact id : gameShopBackEnd
+
+서브 패키지 구조
+controller - GameShopController.java
+model - Game.java
+service - GameShopService.java(interface)
+	impl - GameShopServiceImpl.java
+repository - GameShopRepository.java(interface)

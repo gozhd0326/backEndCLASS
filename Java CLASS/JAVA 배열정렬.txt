@@ -1,0 +1,41 @@
+[Java] 배열 정렬 - sort()
+
+배열 정렬
+오름차순
+// int 배열인 경우
+int[] array = new int[]{42, 25, 60, 73, 103, 167};
+Arrays.sort(array);
+
+// Integer 배열인 경우
+ArrayList<Integer> arrayList = new ArrayList<>();
+arrayList.add(5);
+arrayList.add(4);
+arrayList.add(3);
+arrayList.add(2);
+arrayList.add(1);
+
+Collections.sort(arrayList);				// 방법-1
+arrayList.sort(Comparator.naturalOrder());	// 방법-2
+int 배열: Arrays.sort(array)
+Integer 배열
+Collections.sort(arrayList)
+arrayList.sort(Comparator.naturalOrder())
+
+내림차순
+// int 배열인 경우는 Integer[]로 변환해야 한다.
+int[] array = new int[]{42, 25, 60, 73, 103, 167};
+
+Integer[] newArray = Arrays.stream(array).boxed().toArray(Integer[]::new); 
+Arrays.sort(newArray, Collections.reverseOrder());
+
+// Integer 배열인 경우
+ArrayList<Integer> arrayList = new ArrayList<>();
+
+Collections.sort(arrayList, Collections.reverseOrder()); // 방법-1	
+arrayList.sort(Comparator.reverseOrder());				 // 방법-2
+int 배열: Integer[] newArray = Arrays.stream(array).boxed().toArray(Integer[]::new); Arrays.sort(newArray, Collections.reverseOrder());
+Integer 배열
+Collections.sort(arrayList, Collections.reverseOrder())
+arrayList.sort(Comparator.reverseOrder())
+
+본문 출처 : https://velog.io/@chaeeun2030/Java-%EB%B0%B0%EC%97%B4-%EC%A0%95%EB%A0%AC

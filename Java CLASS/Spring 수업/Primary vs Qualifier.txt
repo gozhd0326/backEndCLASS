@@ -1,0 +1,7 @@
+Primary vs Qualifier
+
+Primary = 아무거나 선택해도 될 때 우선순위를 정하는 것
+ex) 버전 v1.2, v1.3, @Primary v1.4(안정적인 버전), v1.5
+
+Qualifier = 난 이것만 사용해야 돼~~
+ex) MySQL, Oracle, MsSQL, Postgre

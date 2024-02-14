@@ -1,0 +1,11 @@
+com.employeeManagement
+      .controller	EmployeeController.java
+      .model	Employee.java => model을 안붙이는 이유는 데이터베이스 테이블로 만들어지는데 그 이름이 곧 테이블명이 되기 때문에 사용하지 않음.
+      .repository	EmployeeRepository.java
+      .service	EmployeeService.java
+
+
+<자바에서 선호하는 이름 선언법>
+
+Camel Case : userName
+snake case : user_name

@@ -1,0 +1,5 @@
+ServiceImpl 클래스의 생성자
+
+ServiceImpl 클래스의 생성자에서 super();는 불필요한 코드임. 
+ServiceImpl 클래스는 상속을 받지 않고 있으므로 super();를 호출할 필요가 없음.
+ 따라서 이 부분은 삭제하셔도 됨.

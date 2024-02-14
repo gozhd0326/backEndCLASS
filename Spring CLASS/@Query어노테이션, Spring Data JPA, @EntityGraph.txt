@@ -1,0 +1,36 @@
+1. @Query("select u from User u join fetch u.authorities")
+List<User> findAllWithAuthorities();
+
+2. @EntityGraph(attributePaths = "authorities")
+List<User> findAll();
+
+위 두 코드는 같은 역할을 함.
+
+1. 
+- @Query는 Spring Data JPA에서 제공하는 어노테이션으로,
+ SQL이나 JPQL(Java Persistence Query Language)을 이용해 쿼리를 직접 작성할 수 있게 해줌.
+- @Query("select u from User u join fetch u.authorities")라는 구문은 JPQL을 사용해 작성된 쿼리로,
+ 모든 User 엔티티와 그에 연관된 Authority 엔티티를 함께 조회하는 쿼리임
+
+- 위 코드에서 
+ select u from User u는 모든 User 엔티티를 조회하는 부분이고,
+ join fetch u.authorities는 User 엔티티와 연관된 Authority 엔티티를 함께 조회하는 부분임.
+
+- join fetch는 JPA의 fetch join이라는 기능을 이용하는 것으로, 연관된 엔티티를 함께 조회함으로써
+ 나중에 해당 엔티티를 사용할 때 발생할 수 있는 추가적인 쿼리를 줄여 성능을 향상
+
+- 따라서, @Query를 사용하면 기본적으로 제공되는 CRUD 메소드 외에도 복잡한 쿼리를 직접 작성하여 사용할 수 있어, 보다 유연한 데이터 접근이 가능해짐.
+
+
+※ Spring Data JPA는 메소드 이름을 분석해서 쿼리를 생성해주는 기능을 제공함.
+ 하지만 이 경우 메소드 이름이 복잡해지고, 이 방법으로는 join fetch와 같은 복잡한 쿼리를 표현하기 어려움.
+join fetch를 사용해야 하는 findAllWithAuthorities 메소드를 @Query 없이 구현하려면 EntityGraph를 사용하는 방법이 있음.
+
+2.
+- EntityGraph는 JPA 2.1부터 지원하는 기능으로, 엔티티의 특정 속성을 Eager Fetch로 로딩하도록 지정할 수 있음.
+
+- @EntityGraph(attributePaths = "authorities")는 authorities 속성을 Eager Fetch로 로딩하도록 지정
+
+- findAll() 메소드는 Spring Data JPA가 기본으로 제공하는 메소드로, 모든 User 엔티티를 조회함.
+
+-  findAll() 메소드를 호출할 때 authorities 속성도 함께 로딩하므로, findAllWithAuthorities와 동일한 기능을 수행하게 됨.

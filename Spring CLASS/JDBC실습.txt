@@ -1,0 +1,5 @@
+controller - MemberController
+model - Member
+repository -MemberRepository (interface)
+service - MemberService (interface)
+	-service/impl - MemberServiceImpl

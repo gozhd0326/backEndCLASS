@@ -1,0 +1,29 @@
+insert into bin ( id, login_id, content_id) value (1, "gobabo", 2)
+
+#alter table contents modify text varchar(16382);
+#select * from contents;
+alter table contents modify image varchar(1500);
+
+create table contents (
+    id bigint not null auto_increment, 
+    author_id varchar(255), 
+    hidden bit, 
+    image varchar(255), 
+    login_id varchar(255), 
+    nick_name varchar(255), 
+    target_id varchar(255), 
+    text varchar(255), 
+    primary key (id)
+) engine=InnoDB
+
+update contents set hidden = 1 where id = 1
+
+set foreign_key_checks = 0
+
+insert into contents (hidden, image, login_id, nick_name, text) values (0, 'image', 'steve', 'nick', 'text')
+
+insert into user_authority (user_id, authoriuserty_name) values (1,'ROLE_ADMIN');
+
+insert into authority (authority_name) values ('ROLE_ADMIN');
+insert into authority (authority_name) values ('ROLE_USER');
+

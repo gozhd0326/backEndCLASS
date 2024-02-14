@@ -1,0 +1,88 @@
+package practice231018;
+
+import java.util.Scanner;
+import java.util.Arrays;
+class  OrignSubject{
+	
+	String sub[] = {"국어", "수학", "과학", "영어", "역사"};
+	String del = "";
+	String add = "";
+	
+}
+
+public class SubMng {
+public static void main(String[]args) {
+	Scanner s  = new Scanner(System.in);
+ System.out.println("************ 수강 과목 관리 ************");
+	OrignSubject NewSub = new OrignSubject();
+	
+	while(true){
+		int count = 0;
+		System.out.println("현재 과목은 "+ Arrays.toString(NewSub.sub));
+		System.out.println("제거할 과목은(없으면 0 입력 후 Enter) : ");
+		NewSub.del = s.nextLine();
+	
+	if(NewSub.del.equals("0")) {
+		System.out.println("현재 입력된 과목은 "+Arrays.toString(NewSub.sub));
+		break;
+	}
+	
+	for(int i = 0; i <NewSub.sub.length; i++) {
+		if(NewSub.del.equals(NewSub.sub[i])) {
+			String copySub[] = new String[NewSub.sub.length -1];
+			System.arraycopy(NewSub.sub, 0, copySub, 0, copySub.length);
+			
+			for(int j = i; j <NewSub.sub.length-1; j++) {
+				 copySub[j] = NewSub.sub[j+1];
+				
+			}
+			
+			NewSub.sub = copySub;
+			
+		}else {
+			count++;
+			if(count >= NewSub.sub.length) {
+				System.out.println("그런 과목은 없습니다.\n");
+			}
+		}
+		
+	}
+	
+	if(NewSub.sub.length <=0) {
+	System.out.println("모든 과목을 지우셨습니다.");
+	break;
+	}
+
+}
+	while(true) {
+		System.out.print("추가할 과목을 입력(없으면 0 입력 후 Enter) : ");
+		NewSub.add = s.nextLine();
+		
+//		switch(NewSub.add){
+//		case "none":
+//		break;	
+		
+		if(NewSub.add.equals(0)) {break;}
+		else {
+		 String sub2[] = new String[NewSub.sub.length+1];
+			for(int i = 0; i <NewSub.sub.length; i++) {
+				sub2[i] = NewSub.sub[i];
+			}
+			NewSub.sub = sub2;
+			NewSub.sub[NewSub.sub.length-1] = NewSub.add;	
+		}
+	for(int i =0; i < NewSub.sub.length; i++) {
+		System.out.print("추가한 " + (i+1) + "번째 과목 "+ NewSub.sub[i]);
+		System.out.println();
+		
+		break;
+	}
+	}
+	s.close();
+	
+	System.out.println("현재 수강중인 과목 : " + NewSub.sub);
+	System.out.println("수강 포기 과목 : " + NewSub.del);
+	System.out.println("수강 추가 과목 : " + NewSub.add);
+	
+}
+}

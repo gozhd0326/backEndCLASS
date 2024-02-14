@@ -1,0 +1,131 @@
+관계형 데이터 베이스 => 엑셀 표와 같은 형식으로 구성
+
+DataBase => 저장소
+Management System => 거대한 소프트웨어, 기존의 데이터베이스에 편리한 기능을 추가함
+
+MSSQL=> MicroSoft SQL
+
+PostgreSQL => 포스트그리 or 포스트그레
+
+비관계형 데이터 베이스 => 문서형 DB
+
+SQL(Structured Query Langauge) => 구조화 된 쿼리(질문(질의)) 요청 언어 (언어지만 특별한 곳(DB)에서만 사용하여 자유도가 떨어짐, 제한적임)
+
+
+--- 문법 ----
+SELECT * FROM Customers;
+=>
+Number of Records: 91
+CustomerID	CustomerName	ContactName	Address	City	PostalCode	Country
+1 	Alfreds Futterkiste 	Maria Anders 	Obere Str. 57 	Berlin 	12209 	Germany 
+2 	Ana Trujillo Emparedados y helados 	Ana Trujillo 	Avda. de la Constitución 2222 	México D.F. 	05021 	Mexico 
+3 	Antonio Moreno Taquería 	Antonio Moreno 	Mataderos 2312 	México D.F. 	05023 	Mexico 
+4 	Around the Horn 	Thomas Hardy 	120 Hanover Sq. 	London 	WA1 1DP 	UK 
+5 	Berglunds snabbköp 	Christina Berglund 	Berguvsvägen 8 	Luleå 	S-958 22 	Sweden 
+6 	Blauer See Delikatessen 	Hanna Moos 	Forsterstr. 57 	Mannheim 	68306 	Germany 
+7 	Blondel père et fils 	Frédérique Citeaux 	24, place Kléber 	Strasbourg 	67000 	France 
+
+
+
+SELECT CustomerName, ContactName, Country FROM Customers;
+=>
+Number of Records: 91
+CustomerName	ContactName	Country
+Alfreds Futterkiste 	Maria Anders 	Germany 
+Ana Trujillo Emparedados y helados 	Ana Trujillo 	Mexico 
+Antonio Moreno Taquería 	Antonio Moreno 	Mexico 
+Around the Horn 	Thomas Hardy 	UK 
+Berglunds snabbköp 	Christina Berglund 	Sweden 
+Blauer See Delikatessen 	Hanna Moos 	Germany 
+Blondel père et fils 	Frédérique Citeaux 	France 
+Bólido Comidas preparadas 	Martín Sommer 	Spain 
+Bon app' 	Laurence Lebihans 	France 
+Bottom-Dollar Marketse 	Elizabeth Lincoln 	Canada 
+B's Beverages 	Victoria Ashworth 	UK 
+Cactus Comidas para llevar 	Patricio Simpson 	Argentina 
+Centro comercial Moctezuma 	Francisco Chang 	Mexico 
+
+
+SELECT CustomerName, 1, 'Hello', NULL FROM Customers;
+=>
+umber of Records: 91
+CustomerName	Expr1001	Expr1002	Expr1003
+Alfreds Futterkiste 	1 	Hello 	 
+Ana Trujillo Emparedados y helados 	1 	Hello 	 
+Antonio Moreno Taquería 	1 	Hello 	 
+Around the Horn 	1 	Hello 	 
+Berglunds snabbköp 	1 	Hello 	 
+Blauer See Delikatessen 	1 	Hello 	 
+Blondel père et fils 	1 	Hello 	 
+Bólido Comidas preparadas 	1 	Hello 
+
+
+
+' 인용부호 ' 가 없으면 column 으로 인식함.
+=> SELECT customername, 'hello', 'aaa'  FROM Customers;
+
+1이 custom의 갯수만큼 값으로 쭉 들어감 
+
+as는 title을 지정해줌, number라고 하고 1.
+SELECT customername, 1 as 'number', 'h' as 'hello', 'aaa'  FROM Customers;
+
+
+SELECT * FROM orders where employeeid = 3;
+==> = 은 같으면 같은 것, 
+OrderID	CustomerID	EmployeeID	OrderDate	ShipperID
+10251 	84 	3 	7/8/1996 	1 
+10253 	34 	3 	7/10/1996 	2 
+10256 	88 	3 	7/15/1996 	2 
+10266 	87 	3 	7/26/1996 	3 
+10273 	63 	3 	8/5/1996 	3 
+10283 	46 	3 	8/16/1996 	3 
+10309 	37 	3 	9/19/1996 	1 
+10321 	38 	3 	10/3/1996 	2 
+10330 	46 	3 	10/16/1996 	1 
+10332 	51 	3 	10/17/1996 	2 
+10346 	65 	3 	11/5/1996 	3 
+
+
+SELECT * FROM OrderDetails where Quantity < 5;
+=>
+OrderDetailID	OrderID	ProductID	Quantity
+34 	10259 	37 	1 
+43 	10262 	56 	2 
+57 	10268 	72 	4 
+87 	10281 	19 	1 
+89 	10281 	35 	4 
+91 	10282 	57 	2 
+95 	10283 	72 	3 
+109 	10288 	68 	3 
+
+
+
+SELECT * FROM Customers order by ContactName;
+SELECT * FROM Customers order by ContactName asc;
+=> A부터 Z 까지, 1부터 쭉(오름차순)
+
+SELECT * FROM Customers order by ContactName desc;
+=> Z부터 A까지, 큰 수부터 작은 수로 진행(내림차순)
+
+
+SELECT * FROM OrderDetails order by ProductID asc, Quantity desc;
+=> ProdcutID는 오름차순으로, 같은 ProductID 내에서 Quantity는 내림차순으로 정렬
+Number of Records: 518
+OrderDetailID	OrderID	ProductID	Quantity
+100 	10285 	1 	45 
+440 	10413 	1 	24 
+185 	10317 	1 	20 
+124 	10294 	1 	18 
+327 	10370 	1 	15 
+270 	10348 	1 	15 
+283 	10354 	1 	12 
+421 	10406 	1 	10 
+
+
+SELECT CustomerID as "ID", CustomerName as "Name", Address as "Addr" FROM Customers;
+
+SELECT CustomerID as '아이디', CustomerName as '이름', City as '도시', Country as '국가' FROM where City = 'Lomdon' or Country = 'Mexico' order byCustomerName;
+=> 국가가 런던이거나 멕시코인 사람의 이름 안뽑힘 
+
+SELECT * FROM Customer order by customerID asc LIMIT 20 10;
+=> 20개 건너 뛰고 10개씩 보여줌 

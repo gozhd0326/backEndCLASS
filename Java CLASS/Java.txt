@@ -1,0 +1,17 @@
+package test3;
+public class i{
+	public static void main(String[]args) {
+		System.out.println("y");
+		System.out.println("z");
+		int x; //변수 x 선언
+		//int x = 1; //변수 x에 1값을 저장
+		int y = 2; //변수 y를 선언하고 2값을 저장
+		int result = x + y; //변수 result를 선언하고 변수 x와 y를 더한 값을 저장
+		//(result)에 ""(쌍따옴표)를 붙이면 그대로 그 값이 출력
+		//(result)를 넣으면(""쌍따옴표 붙이지 않고) 계산된 값이 출력
+		System.out.println(result);
+	}
+}
+
+print 만 입력하면 가로로 길게 쭉 입력
+println을 하면 줄 나누기가 됨

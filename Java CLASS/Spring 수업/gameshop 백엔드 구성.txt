@@ -1,0 +1,7 @@
+<백엔드 구성>
+1. gameshop application server
+- web server (8080)
+2. security application servver(= 인증서버)
+-web server(8081)
+
+공통 database 서버(mysql)(3306 or 3307) : gameshop, membership 테이블

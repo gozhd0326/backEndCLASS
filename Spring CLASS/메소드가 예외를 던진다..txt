@@ -1,0 +1,49 @@
+* 메소드가 예외를 던진다. *
+=> 메소드가 실행되는 도중에 문제가 발생하여 예외가 발생하게 되면,
+ 메소드는 이 예외를 호출한 곳으로 '던져'버리는 것을 말함.
+ 이때 예외는 호출 스택을 거슬러 올라가면서 호출한 곳으로 전달됨.
+ 이렇게 되면 예외를 발생시킨 메소드는 더 이상 실행되지 않고, 호출한 곳에서 예외를 처리하게 됨.
+
+ex )
+private User getAuthenticatedUser() {
+String currentLoginId = SecurityUtil.getCurrentLoginId()
+.orElseThrow(() -> new InvalidRequestException("Authentication", "사용자 인증 정보를 찾을 수 없습니다."));
+User user = userRepository.findByLoginId(currentLoginId);
+if (user == null) {
+throw new InvalidRequestException("User Not Found", "회원이 아닙니다.");
+}
+return user;
+} 
+
+ ResponseDto<List<LectureCart>> getAllLectureCart() 메소드가 있고 이 안에서 getAuthenticatedUser 메소드를 호출함.
+
+getAuthenticatedUser() 메소드는 InvalidRequestException 을 던질 수 있음.
+ 이 경우, getAllLectureCart() 메소드에서는 getAuthenticatedUser() 메소드가 예외를 던질 수 있다는 것을 인지하고 있어야 하며,
+ 이 예외를 적절하게 처리해야 함.
+
+=> 이렇게 해야하는 이유는, 만약 getAllLectureCart() 메소드에서 getAuthenticatedUser() 메소드가 던지는 예외를 처리하지 않으면,
+ getAllLectureCart() 메소드를 호출한 곳으로 예외가 계속 전파되게 됨.
+ 이렇게 되면 예외를 발생시킨 원래의 위치와 문제를 해결해야 하는 위치가 멀어져서 디버깅이 어려워질 수 있음.
+
+=> 따라서, getAuthenticatedUser() 메소드를 호출하는 메소드에서는 getAuthenticatedUser() 메소드가 던지는 예외를 적절하게 처리해야 함.
+==> 예외 처리 방법은 여러 가지가 있지만,
+ 대표적으로는 try-catch 문을 사용하여 예외를 잡아 처리하거나,
+ 해당 메소드도 이 예외를 던지게 함으로써 이 메소드를 호출하는 상위 메소드에서 예외를 처리하게 할 수 있음.
+
+==> 이렇게 예외를 처리하면 예외가 발생했을 때 어떻게 해야 할지를 명확하게 정할 수 있으며, 예외가 발생한 원인을 더 쉽게 파악할 수 있음.
+
+
+* 예외를 처리하는 방법 *
+
+1 . 예외를 직접 잡아서 처리하는 방법
+:  이 경우 try-catch 문을 사용하여 예외가 발생한 곳에서 직접 예외를 잡아 처리함.
+ 이 방법을 사용하면 예외가 발생한 곳에서 예외를 처리하므로, 예외가 발생한 원인과 예외를 처리하는 코드가 가까워져서 디버깅이 쉬워집니다.
+
+=>일반적으로, 예외를 잡아서 처리하는 것은 예외가 발생한 원인을 바로 해결할 수 있는 경우에 적합
+
+
+2. 예외를 상위 메소드로 전파하는 방법
+: 이 경우 예외를 잡지 않고 그대로 던져서 상위 메소드로 전파함.
+ 이 방법을 사용하면 예외를 처리하는 코드를 한 곳에 모아서 관리할 수 있음.
+
+=> 예외를 전파하는 것은 예외를 처리하는 방법이 여러 가지인 경우에 적합함.

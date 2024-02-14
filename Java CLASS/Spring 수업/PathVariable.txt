@@ -1,0 +1,2 @@
+localhost:8080/api/employee/1 ==> 1이 여기서는 pathvariable 주소 자체에서 변수값을 읽어 옴 (1은 id임)
+localhost:8080/api/employee?id=1 ==>파라미터 형식으로 받아 변수를 지정해줌.

@@ -1,0 +1,286 @@
+
+관계형데이터베이스 시스템(RDBS) => MySQL
+SQL => 언어 ( 발음 : 에스큐엘 or 시퀄 )
+
+데피니션(Definition)
+매니퓰레이션(Manipulation)
+
+ctrol+enter => 커서가 위치한 쿼리 하나만 실행
+ctrol+shift+enter => 전체 쿼리 실행
+
+DistInt => 중복을 없애겠다
+
+select * from user_authority
+
+SELECT 
+    first_name, 
+    last_name, 
+    salary, 
+    round(salary * 1.05,0) AS new_salary => 기존에 소수점 4자리까지 나오던 것을 소수점 아래이하로 다 나오지 않게 함
+    round(salary * 1.05,2) => 소수점 2자리까지 
+FROM
+    employees;
+
+
+Limit => 갯수 제한
+
+SELECT 
+    employee_id, first_name, last_name
+FROM
+    employees
+ORDER BY first_name
+LIMIT 5 OFFSET 3; => offset 은 건너뛰라는 의미임( 여기서는 3명 건너뛰고 나옴 )
+SELECT 
+    employee_id, 
+    first_name, 
+    last_name
+FROM
+    employees
+ORDER BY 
+	first_name
+LIMIT 3 , 5; => 여기서는 3이 offset이고 5가 보여주고 싶은 갯수임
+
+서브쿼리를 많이 쓸 경우 퍼포먼스의 저하가 일어날 수 있기 때문에 많이 쓰지 않는 것이 좋다.
+
+SELECT
+	employee_id,
+	first_name,
+	last_name,
+	hire_date
+FROM
+	employees
+WHERE
+	YEAR (hire_date) = 1999 => 연도만 뽑아내는 함수(YEAR)
+ORDER BY
+	hire_date DESC;
+
+
+where 절 뒤에 있는 애는 무조건 참,거짓이 되어야 함.
+
+null => false이기 때문에 =null 보다 is null을 사용해야 됨
+
+SELECT 
+    first_name, last_name, salary
+FROM
+    employees
+WHERE
+    salary BETWEEN 9000 AND 12000 => 이상 이하
+ORDER BY salary;
+
+SELECT 
+    employee_id, 
+    first_name, 
+    last_name, 
+    salary
+FROM
+    employees
+WHERE
+    salary NOT BETWEEN 2500 AND 2900 => 이상 이하 이 사이에 있는 애들 제외하고!
+ORDER BY salary DESC;
+
+SELECT 
+    first_name, last_name, department_id
+FROM
+    employees
+WHERE
+    department_id IN (8, 9) => 8이나 9중에서
+ORDER BY department_id;
+
+
+LIKE => 문자열 검색
+
+------> % =없거나 있거나 모두 다 포함
+------> ex) 'jo%' =  jo로 시작되는 모든 사람
+------> ex) '%er' = er로 끝나는 모든 사람
+------> ex) '%an%' = an이 들어가는 모든 사람
+
+
+
+SELECT
+	employee_id,
+	first_name,
+	last_name
+FROM
+	employees
+WHERE
+	first_name LIKE 'Jo__'; => Jo뒤에 두글자가 반드시 있어야 함
+
+SELECT 
+    employee_id, first_name, last_name
+FROM
+    employees
+WHERE
+    first_name LIKE '_h%' => 이름에서 2번째 글자가 무조건 h로 들어가고 뒤에 아무 글자나 와도 됨
+ORDER BY first_name;
+
+SELECT
+	employee_id,
+	first_name,
+	last_name
+FROM
+	employees
+WHERE
+	first_name LIKE 'S%' => s로 시작하지만
+AND first_name NOT LIKE 'Sh%' => sh는 빼라
+ORDER BY
+	first_name;
+
+
+SELECT 
+    first_name, last_name, salary
+FROM
+    employees
+WHERE
+    salary >= ALL (SELECT 
+            salary  => 모든 
+        FROM
+            employees
+        WHERE
+            department_id = 8)
+ORDER BY salary DESC;
+
+
+# ANY
+SELECT 
+    first_name, last_name, salary
+FROM
+    employees
+WHERE
+    salary > ANY(SELECT => 최소값보다 더 크면 됨
+            AVG(salary)
+        FROM
+            employees
+        GROUP BY department_id)
+ORDER BY first_name , last_name;
+
+
+SELECT 
+    first_name, last_name
+FROM
+    employees e
+WHERE
+    EXISTS( SELECT  => dependents ID와 employee ID가 있다면 불러옴.
+            1
+        FROM
+            dependents d
+        WHERE
+            d.employee_id = e.employee_id);
+
+
+SELECT 
+    first_name,
+    last_name,
+    hire_date,
+    CASE (2000 - YEAR(hire_date)) => 케이스의 시작
+        WHEN 1 THEN '1 year'
+        WHEN 3 THEN '3 years'
+        WHEN 5 THEN '5 years'
+        WHEN 10 THEN '10 years'
+        WHEN 15 THEN '15 years'
+        WHEN 20 THEN '20 years'
+        WHEN 25 THEN '25 years'
+        WHEN 30 THEN '30 years'
+    END aniversary => 케이스의 끝 ( aniversary 라는 column이 생김)
+FROM
+    employees
+ORDER BY first_name;
+
+
+
+SELECT 
+    first_name,
+    last_name,
+    employees.department_id,
+    departments.department_id,
+    department_name
+FROM
+    employees (leftTable) 메인으로 가져오고 싶은 테이블)
+        INNER JOIN => InnerJoin은 defalt  값이기 때문에 없어도 항상 인식됨
+    departments ON departments.department_id = employees.department_id 
+=> employees(왼쪽테이블)에 deparmen(오른쪽테이블)을 붙여주겠다. 대신 조건이 있음 두개의 테이블이 상관관계가 있는 키가 같은 경우에만
+=> ON ~ 를 뺄경우 employees 와 departments를 곱한 갯수만 큼 나옴 (무조건 ON을 사용해야 함!)
+WHERE
+    employees.department_id IN (1 , 2, 3);
+
+
+SELECT
+	first_name,
+	last_name,
+	job_title,
+	department_name
+FROM
+	employees e => 3개의 테이블 모두 관련이 있는 테이블을 메인으로 두고
+INNER JOIN departments d ON d.department_id = e.department_id
+INNER JOIN jobs j ON j.job_id = e.job_id
+WHERE
+	e.department_id IN (1, 2, 3); => 부서 아이디가 1,2,3 인경우에만
+
+SELECT
+	country_name
+FROM
+	countries c
+LEFT JOIN locations l ON l.country_id = c.country_id => 예를들어 country의 데이터는 있지만 그 외의 정보가 없을 때도 나오게끔 함.
+=> left를 빼면 모든 조건에 충족해야 나옴
+WHERE
+	l.location_id IS NULL
+ORDER BY
+	country_name;
+
+concat => mysql에서 문자열을 합칠때 사용
+
+SELECT 
+    CONCAT(e.first_name, ' ', e.last_name) AS employee,
+    CONCAT(m.first_name, ' ', m.last_name) AS manager
+FROM
+    employees e
+        INNER JOIN
+    employees m ON m.employee_id = e.manager_id
+ORDER BY manager;
+
+
+
+SELECT 
+    CONCAT(e.first_name, ' ', e.last_name) AS employee,
+    CONCAT(m.first_name, ' ', m.last_name) AS manager
+FROM
+    employees e
+        LEFT JOIN ==> managerid를 가지고 있지 않은 사람도 나오게끔
+    employees m ON m.employee_id = e.manager_id
+ORDER BY manager;
+
+Union => 합친다 (교집합의 중복을 하나로 처리!)
+
+Min과 Max는 Distinct와 같이 쓸 수없음
+
+
+SELECT 
+    department_name, COUNT(*) headcount => headcount라는 별명을 붙이는 것임 ( = department_name, COUNT(*) as headcount )
+FROM
+    employees
+        INNER JOIN
+    departments USING (department_id)
+GROUP BY department_name
+ORDER BY department_name;
+
+
+SELECT 
+    department_name,
+    MIN(Round(salary,0)) min_salary,
+    MAX(Round(salary,0))max_salary,
+    ROUND(AVG(salary), 0) average_salary
+FROM
+    employees e
+        INNER JOIN
+    departments d ON d.department_id = e.department_id
+GROUP BY 
+    department_name;
+
+
+
+Where 는 그룹 짓기 전에 조건을 달고 그룹화
+Having은 그룹화 후 조건(having은 group이 없으면 못씀)
+
+
+Selecture는 값이 무조건 
+
+외래키를 사용하는 것이 자식임, 

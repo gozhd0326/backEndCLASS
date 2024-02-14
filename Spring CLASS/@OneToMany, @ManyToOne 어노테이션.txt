@@ -1,0 +1,43 @@
+* @OneToMany, @ManyToOne 어노테이션 *
+
+1. @OneToMany
+
+  - 하나의 Exam Entity가 여러 개의 ExamQuestion Entity를 참조할 수 있음을 나타냄.
+
+  - ex ) ExamQuestion Entity와 Exam Entity의 관계는
+         "하나의 시험(Exam)이 여러 개의 시험 문제(ExamQuestion)를 가질 수 있다"는 관계임.(OneToMany)
+
+  - mappedBy = "exam"는 ExamQuestion Entity의 exam 필드를 통해 이 관계가 매핑되었음을 나타냄.
+
+  - @JoinColumn이나 @JoinTable 애노테이션을 사용하여 어떤 컬럼을 통해 연결될지 명시해야 함.
+
+  - ex ) 만약 ExamQuestion Entity에 exam이라는 Exam을 참조하는 필드가 있다면,
+        examQuestions 필드에 mappedBy 속성을 사용할 수 있음.
+
+  - ex ) @OneToMany(mappedBy = "exam")
+	private List<ExamQuestion> examQuestions;
+	
+	=> 이렇게 하면 ExamQuestion의 exam 필드를 통해 Exam과 ExamQuestion이 연결된다는 것을 명시할 수 있음. 
+
+
+2. @ManyToOne
+   - 여러 개의 ExamQuestion Entity가 하나의 Exam Entity를 참조할 수 있음음을 나타냄. 
+
+   - 이렇게 함으로써 ExamQuestion은 어떤 Exam에 속하는지 알 수 있음.
+
+   - ex )
+	// ExamQuestion Entity
+	@Entity
+	@Table(name = "exam_question")
+	public class ExamQuestion {
+    	// ...
+
+    	@ManyToOne
+    	private Exam exam;
+
+    	// ...
+	}
+
+
+=> 이렇게 양방향 관계를 설정하면, Exam Entity를 통해
+ 관련 ExamQuestion Entity를 찾거나, ExamQuestion Entity를 통해 관련 Exam Entity를 찾는 것이 가능해짐.

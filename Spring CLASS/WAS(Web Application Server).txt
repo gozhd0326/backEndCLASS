@@ -1,0 +1,18 @@
+- WAS(Web Application Server) 구조
+
+	Tomcat		|	Controller	| 	Service		| 	repository	|	MySQL(DB)	
+
+          data Packet	    - 요청확인 + 일 배분 <-(함수)>서비스가 중간에서  <-(Java)-> - JPA를 이용   <-(SQL로 전송)>
+          Parsing					       모든 일을 컨트롤    	         - 트렌젝션(DB와 연결)
+							(JAVA)	                      (메모리를 사용함)
+							Model과		         - 이것을 JPA가 관리
+							DTO를 중계	         - JPA를 쓰면 통역가
+									         - JDBC를 쓰면 직접 통신(SQL)
+									        
+
+
+
+Model(객체의 정보를 전달해주는 역할!
+
+DTO (데이터의 타입을 나타내는 객체) :누군가(유저)에게 주려는 패킷(트렌스퍼 오브젝트)
+:보안상 특별한 정보를 주지 않고 싶을 때 따로 빼서 줄 수 있음

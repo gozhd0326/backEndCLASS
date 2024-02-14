@@ -1,0 +1,27 @@
+centOS => 마우스가 사라졌을 때 ctrl + alt 누르면 마우스가 보임.
+
+터미널 열고 sudo passwd root 
+
+$ su - 
+
+#yum update
+---> 최신버전으로 업데이트 하겠다(무언가를 깔기 전에 항상 실행하기)
+
+/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.382.b05-1.el7_9.x86_64/jre/bin/java
+(터미널 2개 열어놓는게 좋음)
+
+---터미널 창에서 입력---
+java -version =>자바 유무 확인
+
+---설치 방법---
+
+sudo yum list | grep jdk
+
+sudo yum install java-1.8.0-openjdk
+
+y
+
+ctr+x
+y
+enter키
+를 누르면 나가짐. 그리고 그 다음 입력

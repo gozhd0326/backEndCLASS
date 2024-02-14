@@ -1,0 +1,35 @@
+insert into contents (login_id, nick_name, text, image) values ('abcde', 'cute', 'hello', 'image')	1 row(s) affected	0.015 sec
+
+=>rest API 가 지정되지 않았을 때 값을 강제로 부여하는 코드
+
+
+set foreign_key_checks=0	0 row(s) affected	0.000 sec
+
+=>foreign_key(참조)를 비활성화(0) 하는 코드 (참조가 있을경우 해당 테이블은 삭제되지 않는다.)
+
+
+drop table contents
+
+=>contents table을 drop(삭제)하는 코드
+
+
+set foreign_key_checks=1
+
+=>foreign_key를 활성화하는 코드
+
+
+archive 작성문(객체 안에서 객체를 불러옴)
+{
+    "loginId": "abcde",
+    "content" :  {
+        "id": 1,
+        "loginId": "abcde",
+        "nickName": "cute",
+        "text": "hello",
+        "image": "image"
+    }  
+}
+
+
+Content와 Archive는 현재 Entity상태이고 컨트롤러에서 받아서 처리한다.
+하지만 ArchiveDto를 만들면 나중에 contentId만 받아다가 service에서 contentId를 이용하여 content 내용을 가져오기 때문에 훨씬 효율적이다.

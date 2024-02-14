@@ -1,0 +1,60 @@
+패키지 만들기!
+
+Snapshot =>개발테스트 중인 버전(안정성이 많이 떨어짐)
+RC(1)=> 계속  패치에 의해 수정되고 있는 버전(정식에 근접한 버그수정패치)
+버전숫자만 기록 =>아무것도 안붙은건 정식 버전
+
+
+둘 다 자바 빌드 패키지
+war-> 웹서버에서 돌도록 만듦
+jar-> 자바버추얼머신 어디든(더 포괄적임)
+
+
+jpa는 내부적으로 jdbc를 사용함 (jdbc의 wrapper 라이브러리 라고 생각하면 됨)
+편의성을 제공(jpa가 없으면 jdbc에게 직접 명령을 내려야 됨.)
+
+오토컨피규레이션과 관련있음(spring web, spring data jpa, my sqld irver)
+
+
+-------spring에 압축 풀고 이클립스에서 워크스페이스를 스프링으로 설정, 임포트를 내가 진행하고 싶은 프로젝트 패키지파일로 열기(Existing Maven Projects)로 열기!!----------
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+(데이터소스url이 없다 === 데이터베이스 설정이 안되었다.)
+==> application.properties에서 spring.datasource.url=jdbc:mysql://localhost:3307/gameshop를 안적어놓음.(여기에서 gameshop은 DB이름임)
+==>java.sql.SQLSyntaxErrorException: Unknown database 'gameshop'
+(데이터베이스에 게임샵이라는 이름이 아직 없다)=>만들어야 됨
+
+
+MySQL8Dia=> mysql 8버전을 쓰고 있기 때문
+
+ddl => 스키마(데이터베이스의 근간을 이루고 있는 것)을 매번 업데이트 하겠냐(spring.jpa.hibernate.ddl-auto=update)
+
+
+***main/resources/application.properties 에서 입력할 것***
+spring.datasource.url=jdbc:mysql://localhost:3307/gameshop
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=update
+
+
+
+***DB만들기***
+worckbench에서 
+1. show databases 입력후 번개모양 => 내가 현재 가지고 있는 DB리스트가 나옴
+2. create database gameshop => gameshop DB를 만들거야
+3. use gameshop => 게임 샵을 사용할거야
+entity를 만들어야 테이블이 생성
+
+
+엘더스크롤 정보를 DB에 쓰면 에러가 남!!!
+DB에 String 데이터열의 기본 length 255를 초과하기때문
+워크벤치에서 아래 명령 실행
+alter table games modify text varchar(1000) => 1000자로 늘린다.
+
+테이블 내용 비우기 명령
+truncate table games

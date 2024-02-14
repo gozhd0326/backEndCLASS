@@ -1,0 +1,23 @@
+<GameShop 신기능>
+카트에 담긴 게임목록 구매 후 저장하기
+구매목록 -> 백엔드
+
+POST method
+Body JSON 구매목록을 담아서 전송
+
+구매목록 테이블을 만들어야됨
+@PostMapping("products/purchase")
+Controller가 위 요청을 받아서 savePurchase method 수행
+
+DB의 purchase table에 저장
+
+
+<백엔드 추가할 내용>
+Model
+1. Purchase.java : purchase table을 만들기 위한 Entity
+
+Repository
+1. PurchaseRepository : purchase table을 컨트롤하기 위한 구현체를 만드는데 필요함
+
+Service, Controller 
+1. 기존 서비스에 기능 추가해서 사용

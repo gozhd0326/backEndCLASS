@@ -1,0 +1,40 @@
+<Springboot>
+1. CRUD 구현
+2. 스프링/ 스프링부트의 기본 구조 학습
+	Client <=> Controller, Service, Repository <=> DB
+			Model,(View)
+
+3. 스프링/스프링부트의 핵심원리.. 맛만 봄!!
+: Dependency Injection 의존성 주입(DI)
+:Inverse of Control 제어의 역전(Ioc)
+:Auto Configuration 자동 설정
+
+4. 데이터베이스 설치 (MySQL, Workbench)
+
+5. Rest API 만들고 컨트롤하기
+: Client의 리액트 => Backend의 스프링(통신)
+: postman(Rest API를 테스트 해보기 위해 사용)
+
+
+
+
+
+스프링은 매우 빠르고 퍼포먼스가 좋기 때문에 이커머스(온라인쇼핑)에서 많이 쓰임
+여러 기능들이 많이 추가 되다보면 매우 무겁고 쓰기 어려워짐
+
+포스트맨도 다르기 까다로워 이력서에 한줄 넣어도 됨
+
+의존성주입=>오토와이어드라는 어노테이션을 이용해 의존성 주입을 쉽게 할 수 있도록 함(싱글턴) (DI)
+제어의 역전=>(IoC)
+오토컨피규레이션(자동설정)=>스프링부트의 핵심 원리(pom.xml)
+
+
+
+DAO(다오)(Data Access Object) => DB에 실제로 접근하기 위한 객체(레이어)
+우리는 레파지토리가 다오와 비슷하다. (JPA(그중에서도 hibernate)가 그 일을 함)
+(레파지토리의 구현체를 만든다면 그것을 DAO라고 지정할 수 있다)
+
+: 프로젝트 서비스 모델과 실제 DB를 연결하는 역할을 하며, JPA에서는 DB에 데이터를 CRUD 하는 Repository 객체들이 DAO라고 볼 수 있다.
+
+(DAO와 Repository에 의도와 인터페이스의 메소드 시그니처에 유사성이 존재하지만 그렇다고 해서 둘을 동일한 패턴으로 취급하면 안된다.)
+(repository는 엔티티 객체를 보관하고 관리하는 저장소이고, dao는 데이터에 접근하도록 DB접근 관련 로직을 모아둔 객체입니다. 둘다 개념의 차이일뿐 실제로 개발할 때는 비슷하게 사용됩니다.)

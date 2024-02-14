@@ -1,0 +1,116 @@
+* 클래스 안의 캡슐화(Encapsulation) *
+
+- 캡슐화(Encapsulation)는 객체 지향 프로그래밍에서 중요한 개념 중 하나임.
+
+- 이는 객체의 속성(데이터 필드)과 행위(메서드)를 하나로 묶고, 실제 구현 내용 일부를 외부에 감추는 것을 말함.
+
+- 이렇게 하면 객체의 내부 상태를 외부에서 직접 접근하지 못하게 하고,
+ 오직 객체가 제공하는 메서드를 통해서만 접근할 수 있게 함.
+
+- 캡슐화(Encapsulation)의 장점
+
+  1.  데이터 은닉(Data Hiding) :
+     -  객체의 내부 상태를 외부에서 직접 접근하지 못하게 하여 객체의 상태를 보호함.
+     -  이는 객체의 상태가 잘못 변경되는 것을 방지하고, 객체의 내부 구현을 자유롭게 변경할 수 있게 함.
+
+  2. 유지 보수성(Maintainability) : 
+     - 객체의 내부 구현을 변경해도 그 객체를 사용하는 코드는 변경하지 않아도 됨. 이는 코드의 유지 보수성을 높임.
+
+  3. 재사용성(Reusability) : 잘 설계된 객체는 다른 프로그램에서도 재사용할 수 있습니다.
+
+
+
+
+- ex ) 기존의 내 코드
+
+// 현재 로그인한 유저의 ClassRoom의 진도율과 최근 시청기록을 업데이트
+@Override
+public ResponseDto<ClassRoom> updateClassRoom(Long classRoomId, ClassRoomUpdateDto updateClassRoom) {
+	Optional<ClassRoom> classRoomOptional = classRoomRepository.findByClassRoomId(classRoomId);
+	User user = getAuthenticatedUser();
+	
+	
+	if(classRoomOptional.isEmpty()) {
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "현재 수강중인 강의가 없습니다.");
+	}
+	ClassRoom classRoom = classRoomOptional.get();
+
+	
+	if(!classRoom.getUser().equals(user)) {
+		throw new InvalidRequestException("Unauthorized", "해당 ClassRoom에 대한 권한이 없습니다.");
+	}
+	
+	classRoom.setProgressRate(updateClassRoom.getProgressRate());
+	classRoom.setViewingRecord(updateClassRoom.getViewingRecord());
+	classRoom.setRecentViewing(LocalDateTime.now());
+		
+	ClassRoom saveClassRoom = classRoomRepository.save(classRoom);
+	
+	return new ResponseDto<>(ResultCode.SUCCESS.name(),saveClassRoom,"ClassRoom이 성공적으로 업데이트 되었습니다.");
+	
+}
+
+
+=> updateClassRoom 메서드에서 classRoom.setProgressRate(updateClassRoom.getProgressRate());와 같이
+ updateClassRoom 객체의 필드를 하나씩 가져와서 classRoom 객체에 설정하고 있음.
+ 만약 ClassRoom 객체의 필드가 많아진다면 이 부분이 복잡해질 수 있음.
+
+=>  이 부분을 개선하기 위해 ClassRoom 클래스에 updateClassRoom 객체를 받아서 ClassRoom 객체의 필드를 업데이트하는 메서드를 추가
+
+
+- ex ) 변경 후 
+
+-> ClassRoom Entity에 아래 필드 추가
+
+public void update(ClassRoomUpdateDto updateClassRoom) {
+    this.progressRate = updateClassRoom.getProgressRate();
+    this.viewingRecord = updateClassRoom.getViewingRecord();
+    this.recentViewing = LocalDateTime.now();
+}
+
+-> serviceImpl 코드 변경
+
+// 현재 로그인한 유저의 ClassRoom의 진도율과 최근 시청기록을 업데이트
+	@Override
+	public ResponseDto<ClassRoom> updateClassRoom(Long classRoomId, ClassRoomUpdateDto updateClassRoom) {
+		Optional<ClassRoom> classRoomOptional = classRoomRepository.findByClassRoomId(classRoomId);
+		User user = getAuthenticatedUser();
+		
+		
+		if(classRoomOptional.isEmpty()) {
+		    return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "현재 수강중인 강의가 없습니다.");
+		}
+		ClassRoom classRoom = classRoomOptional.get();
+
+		
+		if(!classRoom.getUser().equals(user)) {
+			throw new InvalidRequestException("Unauthorized", "해당 ClassRoom에 대한 권한이 없습니다.");
+		}
+
+		// ClassRoom 객체의 상태 변경 로직이 ClassRoom 클래스 안에 캡슐화됨.
+		// ClassRoomServiceImpl 클래스는 ClassRoom 객체의 상태를 직접 변경하지 않아도 됨.
+		// ClassRoom 클래스의 update 메서드를 호출하여 classRoom 객체의 필드를 한 번에 업데이트
+	    classRoom.update(updateClassRoom);
+
+	    ClassRoom saveClassRoom = classRoomRepository.save(classRoom);
+
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(), saveClassRoom, "ClassRoom이 성공적으로 업데이트 되었습니다.");
+		
+	}
+
+
+=> ClassRoom 객체의 상태 변경 로직이 ClassRoom 클래스 안에 캡슐화되고, ClassRoomServiceImpl 클래스는 ClassRoom 객체의 상태를 직접 변경하지 않아도 됩니다. 
+
+=> 이 방식은 객체 지향 원칙 중 하나인 "객체의 상태는 객체 자신이 관리해야 한다"는 원칙을 잘 따르고 있습니다.
+
+=> 이 메서드를 통해 ClassRoom 객체의 내부 상태를 직접 접근하지 않고,
+ 오직 update 메서드를 통해서만 ClassRoom 객체의 상태를 변경할 수 있게 함.
+
+=> 이는 ClassRoom 객체의 상태를 보호하고, ClassRoom 클래스의 내부 구현을 자유롭게 변경할 수 있게 함 
+
+=> 기존에는 updateClassRoom 객체의 필드를 하나씩 가져와서 classRoom 객체에 설정했지만, 이제는 ClassRoom 클래스의 update 메서드를 호출하여 classRoom 객체의 필드를 한 번에 업데이트합니다.
+
+=>  이렇게 하면 ClassRoom 클래스의 필드가 추가되거나 변경되더라도 ClassRoom 클래스 안의 update 메서드만 수정하면 되므로, ClassRoomServiceImpl 클래스의 코드는 거의 변경하지 않아도 됩니다.
+
+==> 코드의 유지 관리성을 높이는 데 도움이 됩니다.
+

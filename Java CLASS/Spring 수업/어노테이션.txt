@@ -1,0 +1,20 @@
+어노테이션
+Annotation
+
+
+@RestControlloer에 컨트롤을 누르고 클릭하면 상세 페이지가 뜸.
+
+@Controller
+@ResponseBody
+@Component
+
+레스트컴포넌트를 선언한 애들은 다 빈이다.
+
+
+Bean 콩
+:스프링이 관리하는 모든 객체는 Bean
+:관리하는...의 의미는 스프링의 IOC container가 의존성(Dependency)을 모두 관리한다는 의미임.
+
+
+동적html을 정적으로 만듦. 템플릿 엔진
+html을 동적으로 서버사이드를 하는 프로그램 thymleaf

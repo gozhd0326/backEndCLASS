@@ -1,0 +1,41 @@
+★ SecurityUtil.getCurrentLoginId()
+
+- SecurityUtil.getCurrentLoginId() 메소드는 일반적으로 JWT 토큰이나 세션을 통해 인증된 사용자의 정보를 가져오는데 사용됩니다.
+
+- JWT를 사용할 때, 토큰은 클라이언트에서 서버로 요청을 보낼 때마다 헤더에 포함되어 보내집니다.
+ 그러면 서버 측에서는 이 토큰을 해석하여 사용자를 인증하고, 필요한 사용자 정보를 획득합니다.
+SecurityUtil.getCurrentLoginId() 메소드는 이러한 과정을 담당하는 메소드입니다. 
+
+- Spring Security의 SecurityContextHolder를 통해 현재 인증된 사용자의 정보를 가져오게 됩니다.
+
+- 이 메소드를 통해, 서비스나 리포지토리 레이어에서 현재 로그인한 사용자의 정보를 쉽게 획득할 수 있습니다.
+ 이는 사용자별로 데이터를 분리하거나, 특정 사용자에게만 허용되는 작업을 수행하는 등의 기능을 구현하는데 유용합니다.
+
+
+코드 사용 예시 : 
+
+  String currentLoginId = SecurityUtil.getCurrentLoginId().orElseThrow(() -> 
+        new InvalidRequestException("Authentication", "사용자 인증 정보를 찾을 수 없습니다."));
+
+=>  SecurityUtil.getCurrentLoginId().orElseThrow() 구문은 현재 로그인한 사용자의 ID를 가져오려고 시도하고, 
+만약 그 정보가 없다면 예외를 발생시키는 역할을 함.
+
+=> 이 메소드가 null을 반환하면서 예외를 발생시키는 것(아래의 1번과 같은 경우)은(는)
+ "현재 로그인한 사용자의 정보를 가져오려고 했는데, 그런 정보가 없다"는 것을 나타내는 것이므로, 
+이를 통해 로그인하지 않은 사용자가 로그인이 필요한 기능을 사용하려고 시도했는지, 또는 시스템에 문제가 있는지를 확인할 수 있음.
+
+=> 이 코드는 로그인한 사용자의 정보를 안전하게 처리하고, 문제가 발생했을 때 적절한 예외를 발생시키는 중요한 역할함.
+
+
+- SecurityUtil.getCurrentLoginId() 메소드는 
+Spring Security Context에서 현재 로그인한 사용자의 ID를 가져오는 역할을 함.
+
+
+- SecurityUtil.getCurrentLoginId() 가 null을 반환하는 경우
+
+- 1. 사용자가 로그인하지 않은 상태에서 이 메소드를 호출한 경우: 
+=> 이 경우 Spring Security Context에 로그인한 사용자의 정보가 없으므로 null이 반환됨.
+
+- 2. 사용자는 로그인했지만, 어떤 이유로 인해 Spring Security Context에 사용자 정보가 제대로 저장되지 않은 경우: 
+=> 이런 경우는 보통 프로그램의 버그나 설정 오류 때문에 발생함.
+

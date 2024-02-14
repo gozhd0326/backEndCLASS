@@ -1,0 +1,8 @@
+package practice1017;
+
+public class CarExample2 {
+public static void main(String[]args) {
+	Car car1 = new Car("자가용");
+	System.
+}
+}

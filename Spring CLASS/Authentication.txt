@@ -1,0 +1,9 @@
+Authentication
+
+extends GrantedAuthority> getAuthorities(); // 권한
+Object getDetails();
+Collection<? extends GrantedAuthority> getAuthorities(); ==> return value는 배열이다.
+ // 컬렉션 : 배열들의 부모( list,set,mep,table,딕셔너리) =>어떠한 데이터 타입이 와도 가능
+<? : 여기에는 클래스를 상속받은 누구던지 올 수 있다
+
+prinsipal = userName

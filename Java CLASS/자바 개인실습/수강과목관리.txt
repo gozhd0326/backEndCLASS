@@ -1,0 +1,103 @@
+public class test1 {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("************ 수강 과목 관리 ************");
+        OrignSubject NewSub = new OrignSubject();
+
+        int removedSubjects = 0; // 제거한 과목의 개수를 저장할 변수
+        int addedSubjects = 0; // 새롭게 추가한 과목의 개수를 저장할 변수
+
+        // 과목 제거 부분
+        while (true) {
+            int count = 0;
+            System.out.println("현재 과목은 " + Arrays.toString(NewSub.sub));
+            System.out.print("제거할 과목은(한 번에 한 과목씩 적어 주세요. 없으면 0 입력 후 Enter) : ");
+            NewSub.del = s.nextLine();
+
+            if (NewSub.del.equals("0")) {
+                System.out.println("현재 입력된 과목은 " + Arrays.toString(NewSub.sub));
+                break;
+            }
+
+            for (int i = 0; i < NewSub.sub.length; i++) {
+                if (NewSub.del.equals(NewSub.sub[i])) {
+                    // 선택한 과목을 배열에서 제거하기 위해 새로운 배열을 생성합니다.
+                    String copySub[] = new String[NewSub.sub.length - 1];
+                    System.arraycopy(NewSub.sub, 0, copySub, 0, copySub.length);
+
+                    // 선택한 과목을 제외한 나머지 과목들을 복사합니다.
+                    for (int j = i; j < NewSub.sub.length - 1; j++) {
+                        copySub[j] = NewSub.sub[j + 1];
+                    }
+
+                    NewSub.sub = copySub; // 새로운 배열로 업데이트
+
+                    removedSubjects++; // 과목 제거할 때마다 제거한 과목 개수 증가
+                } else {
+                    count++;
+                    if (count >= NewSub.sub.length) {
+                        System.out.println("그런 과목은 없습니다.\n");
+                    }
+                }
+            }
+
+            if (NewSub.sub.length <= 0) {
+                System.out.println("모든 과목을 지우셨습니다.");
+                break;
+            }
+        }
+
+        // 과목 추가 부분
+        while (true) {
+            System.out.print("추가할 과목을 입력(없으면 1 입력 후 Enter) : ");
+            NewSub.add = s.nextLine();
+
+            if (NewSub.add.equals("1")) {
+                if (addedSubjects > 0) {
+                    System.out.println("추가한 " + addedSubjects + " 과목이(가) 현재 수강 중인 과목에 추가되었습니다.");
+                } else {
+                    System.out.println("추가한 과목이 없습니다.");
+                }
+                System.out.println("현재 수강중인 과목 : " + Arrays.toString(NewSub.sub));
+                break;
+            } else {
+                // 새로운 과목을 추가하기 위해 새로운 배열을 생성합니다.
+                String sub2[] = new String[NewSub.sub.length + 1];
+                for (int i = 0; i < NewSub.sub.length; i++) {
+                    sub2[i] = NewSub.sub[i];
+                }
+
+                NewSub.sub = sub2; // 새로운 배열로 업데이트
+                NewSub.sub[NewSub.sub.length - 1] = NewSub.add; // 새로운 과목 추가
+
+                addedSubjects++; // 과목 추가할 때마다 새로운 과목 개수 증가
+
+                System.out.println("추가한 " + NewSub.add + "이(가) 현재 수강 중인 과목에 추가되었습니다.");
+            }
+        }
+
+        // 결과 출력
+        System.out.println("수강 포기 과목: " + removedSubjects);
+        System.out.println("수강 추가 과목: " + addedSubjects);
+
+        s.close(); // 스캐너 사용 종료
+    }
+}
+
+위의 코드는 다음과 같이 작동합니다:
+
+사용자가 실행하면 "수강 과목 관리"를 나타내는 메시지가 표시됩니다.
+
+과목 제거 부분:
+
+사용자는 과목을 제거할 수 있습니다. 하나씩 과목 이름을 입력하거나 0을 입력하여 제거를 종료할 수 있습니다.
+removedSubjects 변수는 제거한 과목의 개수를 추적합니다.
+선택한 과목을 제거할 때마다 해당 과목을 배열에서 제거하고, removedSubjects가 증가합니다.
+과목 추가 부분:
+
+사용자는 새로운 과목을 추가할 수 있습니다. 하나씩 과목 이름을 입력하거나 1을 입력하여 추가를 종료할 수 있습니다.
+addedSubjects 변수는 새롭게 추가한 과목의 개수를 추적합니다.
+새로운 과목을 추가할 때마다 해당 과목을 배열에 추가하고, addedSubjects가 증가합니다.
+마지막으로, "수강 포기 과목"과 "수강 추가 과목"의 개수가 출력됩니다.
+
+이렇게 코드는 사용자가 과목을 제거하고 추가할 때마다 해당 과목의 개수를 추적하고 결과를 출력합니다.

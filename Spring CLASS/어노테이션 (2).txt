@@ -1,0 +1,37 @@
+빈은 내가 언제나 가져다 쓸 수 있는 녀석
+객체화를 하지 않아도 함수를 바로바로 쓸 수 있음
+bean annotation을 사용하려면 그 class가 bean이어야 사용가능
+@configuration 컨피규레이션
+
+
+
+컨트롤러에서 쓰이는 어노테이션
+
+@Component : Class를 bean으로 만듦
+@ComponentScan : 하위 자손인 Class를 모두 bean으로 만듦!!
+@Bean : method를 bean으로 만듦
+@Controller : Servelt의 도움을 받기 위해 넣음(서블렛과 유사한 동작을 하기위함)
+@ResponseBody : JASON화해서 전송하는 녀석
+@RestController : Controller와 ResponseBody를 합쳐놓음(view가 필요없음) 
+@GetMapping : Controller 속에서 쓰임 get방식에 Mapping하겠다
+@Override : 내가 상속받은 녀석을 상속받은 추상메소드를 바꿈 익스텐즈에 쓰임(인터페이스에는 x)
+@Configuration : 빈 메소드들을 정의하기 위해 쓰임.(초기에 ioc컨소드가 인식하기 쉬움)(Bean 설정클래스)빈 메소드들을 모아놓은 어노테이션
+
+@Primary : 선택할 것이 여러 개 생겼을 시 프라이머리를 사용해 그 빈을 우선적으로 사용하게끔 함.
+프라이머리->우선시
+
+(context->ioc컨테이너의 일부나 전체를 가지고 있음.
+applicationcontext)
+
+
+--- 공통된 이름을 가진 빈이 있을 경우 선택권 부여 ---
+@Primary : 아무거나 선택해도 될 때 우선순위를 정하는 것
+ex) 버전 v1.2, v1.3, @Primary v1.4(안정적인 버전), v1.5
+@Qualifier : 난 이것만 사용해야 돼~~
+ex) MySQL, Oracle, MsSQL, Postgre
+
+@Autowired : 의존성주입 어노테이션
+<사용법>
+**1. 생성자 주입(@Autowired 생략가능) : 생성자를 만들면 의존성주입이 해결된다는 것!!!!
+2. 세터 주입
+3. 필드 주입

@@ -1,0 +1,7 @@
+package pr231019;
+
+
+public class practice1 {
+
+	
+}

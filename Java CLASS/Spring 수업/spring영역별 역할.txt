@@ -1,0 +1,15 @@
+pom.xml =>플러그인이나 익스텐즈들을 추가 및 관리함
+src/main/resources -> application.properties
+=>어플리케이션의 사용설정. 초기에는 빈페이지
+
+spring.datasource.url=jdbc:mysql://localhost:3307/ems?useSSL=false
+=> 데이터베이스의 포트주소와 ems는 데이터베이스 이름
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+=> 내가 사용하려는 녀석은 msql8다이렉트라는 녀석이야
+spring.jpa.hibernate.ddl-auto=update
+=> 스키마를 매번 업데이트 하겠다.(우리는 jpa에게 맡길거야)
+jpa를 사용하면 모델을 스키마로 만듦 
+스키마=>데이터베이스의 생긴 모양(어떤 테이블 형식이고 컬럼에 어떤 값이 들어가는지 설정)
+스프링에서 모델은 객체

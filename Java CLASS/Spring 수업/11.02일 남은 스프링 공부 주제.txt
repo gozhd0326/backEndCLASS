@@ -1,0 +1,12 @@
+<남은 스프링 공부 주제>
+1. 회원가입
+2. 유효성 검증 : 가입데이터의 validation check
+3. 각 예외상황에 맞는 Exception Handling(예외처리사항)(자체 exception 만들기)
+4. 리액트로 로그인/ 회원가입 화면 구성
+5. Security : 인증 / 인가, JWT(Json Web Token)
+6. GameShop 완성
+
+<추가 공부 예정(12 ~ 1월 예상)>
+- View 모듈 : JSP, Thymeleaf
+- Database(sqld 시험(데이터베이스 기초)SQL Developer)
+- Amazon Web Service(AWS) 연동

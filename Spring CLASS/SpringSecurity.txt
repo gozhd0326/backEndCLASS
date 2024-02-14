@@ -1,0 +1,138 @@
+<Spring Security> 보안
+- 라이브러리 임
+stability : 안정성
+
+deprecated = 중요도가 떨어져 더 이상 사용되지 않고 앞으로는 사라지게 될 
+(업데이트가 되어 지원을 안하니 사용하지 말아라( 경고메세지 ))
+
+security (컨트롤러에 가기 전에 보안에 문제가 있을 경우 차단함) 
+
+CSRF(spring이 기본적으로 지원함) + JWT
+
+ID : user
+Using generated security password: ba3da334-324f-4773-ada8-5d17f9952699
+
+라이브러리를 default가 모든 것을 다 막도록 설정되어 있어서 ID와 password를 입력해야 적용됨
+
+post 는 default 가 막혀있음 Get만 가능함.
+
+
+@Configuration
+ 1. 환경설정 ( SecurityConfig 클래스 )
+ 
+   - RestAPI 보안기능 설정
+       : 가입 관련 요청등은 보안을 적용시키지 말아야 함
+
+    - 세션 또는 토큰 설정
+       : 기본 설정은 세션
+
+    - 예외 (Exception) tjfwjd
+       : 보안 실패의 경우, 기존의 응답형식을 유지할 수 있도록 설정
+    
+  
+
+jwt.header=Authorization : 토큰의 위치, Authorization 항목의 header에 넣어라.
+
+jwt.secret=c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK : 암호화 하는데 필요한 key의 값(인코딩)
+
+jwt.token-validity-in-seconds=86400 : 토큰의 라이프 타임 , 86400초( 하루 )
+
+logging.level.com.dw.discord.jwtauthority.jwt.*=DEBUG : 디버그 레벨( 로그가 더 많이 찍힘. 기본은 info레벨임 )
+loggin.level : 모든 클래스의 모든 디버그 레벨을 다 보여줘라.
+logging.level . (패키지 이름)
+dw.discord 패키지 안의 jwtauthority 안에 모든 jwt
+
+ 1. @Configuration : 환경설정 클래스임을 명시하는 역할
+    @EnableWebSecurity : 웹 기반 보안을 활성화
+    @EnableMethodsecurity : 메소드 수준의 보안을 활성화
+     - 메소드 수준이란, 컨트롤러의 메소드들마다 다른 수준의 보안을 가질 수 있도록 아래의 어노테이션을 사용하도록 한다는 뜻
+<@PreAuthorize, @Secured, @RollAllowed>
+
+ 2.  JWT 토큰의 구성
+    1) Header(헤더) (안에 내용을 봐야하기 때문에 암호화 하면 안됨! 그렇기 때문에 인코딩을 함)
+       - 토큰의 유형을 설명함 
+          (ex) " 페이로드는 Base64로 인코딩 되어 있음"
+    
+    2) Payload(페이로드) : 본문 (안에 내용을 봐야하기 때문에 암호화 하면 안됨! 그렇기 때문에 인코딩을 함)
+       (뭐든 담을 수 있으나 흔히 많이 담는 내용)
+       - user ID
+       - 권한 (user or admin)
+       - 라이프 타임 (유효시간) (ex) 2023.12.19.00.00에 만료)
+
+    3) Signature(서명)
+       - 헤더와 페이로드를 합쳐셔 암호화 기술로 암호화 시킨 부분
+         (해커가 1번과 2번을 변경해서 보냈을 때 서버는  다시한번 서명해서 기존의 서명내용과 비교해서 맞지 않으면 버림 )
+
+
+3. 권한 설정
+: 권한의 이름은 반드시 "ROLE_"로 사용해야함
+ex) ROLE_ADMIN, ROLE_USER 등등
+insert into authority (authority_name) values ('ROLE_ADMIN');
+insert into authority (authority_name) values ('ROLE_USER');
+
+ private Set<Authority> authorities; // 권한은 세트임..!! 관리자의 경우에는 두 가지 다 가진다. 1 admin / 1 user // 중복 가능하다! // Set은 중복을 허용하지 않음 그래서 이런 경우에는 Set을 사용함
+
+=> Admin의 권한을 가진 사람은 아래와 같이 표기된다.
+1  admin
+1 user
+
+
+ UsernamePasswordAuthenticationToken에서 
+principal : 각자의 유니크한 구분명( 일반적으로 loginId )
+credentials : 숨겨야되는 보안정보( 일반적으로 password )
+
+
+
+ 4. 인증 절차
+  Authentication authentication = authenticationManagerBuilder.getObject()
+        		.authenticate(authenticationToken);
+
+1) 사용자가 로그인 시도를 하면 authenticationToken 생성
+2) 인증을 관리하는 AuthenticationManager가 authenticationToken을 받음
+3) AuthenticationManager는 인증절차를 AuthenticationProvider에게 위임함
+4) AuthenticationProvider는 전달받은 authenticationToken의 사용자명(principal)를 추출하고 이를 기반으로 UserDetailService의 "loadUserByUsername" 메소드를 호출
+5) UserDetailService의 "loadUserByUsername" 메소드는 DB로부터 사용자 정보를 조회하여 UserDetails 객체로 반환 (User details service(유저 정보를 가져와라)는 user details를 만드는 애)
+6) 최종적으로 AuthenticationProvider는 UserDetails 객체와 authenticationToken을 비교하여 실제 인증을 수행
+
+
+
+	/**
+	 * Create a {@code ResponseEntity} with a body, headers, and a status code.
+	 * @param body the entity body
+	 * @param headers the entity headers
+	 * @param statusCode the status code
+	 */
+	public ResponseEntity(@Nullable T body, @Nullable MultiValueMap<String, String> headers, HttpStatusCode statusCode) {
+		super(body, headers);
+		Assert.notNull(statusCode, "HttpStatusCode must not be null");
+
+		this.status = statusCode;
+	}
+
+
+
+post) http://localhost:8080/api/signup
+
+{
+    "resultCode": "SUCCESS",
+    "data": {
+        "username": "steve",
+        "nickname": "hero",
+        "authorityDtoSet": [
+            {
+                "authorityName": "ROLE_USER"
+            }
+        ]
+    },
+    "message": "정상 처리되었습니다"
+}
+
+post )  http://localhost:8080/api/authenticate
+
+{
+    "resultCode": "SUCCESS",
+    "data": {
+        "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdGV2ZSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE3MDI5NzM1ODZ9.wmtHIkUfcX9g4uwCMwkofq2f4evlfcdGySNM2xT-hEZ3wKu6_yRpxucckcAd5a33L8CfKO5ZIcAPWJwXnA2uJg"
+    },
+    "message": "정상 처리되었습니다"
+}

@@ -1,0 +1,23 @@
+<프론트엔드 구성>
+GameShopFrontEnd 컴포넌트(프론트사이드 애플리케이션)
+페이지 구성
+- home (Home)
+- shop (Products - SingleProducts)
+- dashboard (Dashboard)
+- login (Login)
+- cart (Cart)
+- error (Error)
+
+페이지 이외의 컴포넌트
+api : rest API 함수 담당
+navItem, navbar : 메뉴바 담당
+productWrapper : shop 페이지를 둘로 나누는 역할
+protectedRoute : dashboard를 감추는 역할(로그인 여부에 따라)
+purchase : 구매요청 담당
+register : 가입요청 담당
+logout : 로그아웃 담당
+
+
+
+후크는 반드시 그 컴포넌트가 로딩될 때 처음으로 실행되기 때문에 조건문 안에 들어갈 수 없음 그리고 jsx안이나 함수 안에서 사용할 수 없음
+하지만 그 안에 콜백 함수에서 조건문을 사용할 수 있음.

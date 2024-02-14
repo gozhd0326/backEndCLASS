@@ -1,0 +1,11 @@
+* remove 메소드*
+- Java의 Collection 인터페이스에 정의된 메소드로,
+- 컬렉션에서 특정 요소를 제거하는 역할
+- 따라서 user.getWishLecture().remove(lecture)는 User가 찜한 강의 목록에서 특정 강의를 제거하는 것을 의미
+
+*delete메소드*
+- 보통 Repository나 DAO(Data Access Object)에서 제공하는 메소드
+- 데이터베이스에서 특정 레코드를 삭제하는 역할
+
+
+=> 즉, remove는 메모리 상의 컬렉션에서 요소를 제거하는 것이고, delete는 데이터베이스에서 레코드를 삭제하는 것

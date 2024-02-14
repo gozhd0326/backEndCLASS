@@ -1,0 +1,98 @@
+	Frontend|		Backend
+Client <-> Web Server <-> Application Server <-> Database
+		|
+< 프론트엔드 관련 기술들 - 로드맵 >
+
+필수: 
+	HTML(구조), CSS(디자인), Javascript(로직)
+선택: 
+	React(프레임워크), 
+	Styled-Component(CSS), 
+	Framer-motion(애니메이션 라이브러리)
+
+< 백엔드 관련 기술들 - 로드맵 >
+
+1. 자바
+	스프링, 스프링부트
+2. 파이썬 / 장고
+3. 노드js / 익스프레스, Nest.js...
+4. php / 라라벨
+
+< 스프링/스프링부트의 구조 >
+MVC (프로그래밍의 디자인 패턴)
+Model (모델)
+View (뷰) 
+	- 클라이언트에서 볼 수 있는 view 형태를 만드는 모듈(HTML, JSP)
+Controller (컨트롤러)
+	- 클라이언트로부터 HTTP 요청을 처리하는 모듈
+
+HTTP = Hyper Text Transfer Protocol
+: 편지봉투
+
+client		<->	Controller Layer <-> Service Layer <-> Model -> Database
+	request,respose						    JPA    |-CRUD/Native Query
+							   <-> Repository 
+
+JSP = Java Service Page,
+	- 자바로 서버에서 만든 동적인 페이지
+	- HTML로 변환되어 클라이언트에 보내짐
+** CSR = Client-Side Rendering
+	: View의 역할을 100% 클라이언트가 맡는 것
+	: React, Vue, Angular, Svelte 등 SPA 프레임워크들
+** SSR = Server-Side Rendering
+	: View의 역할을 서버에서 담당하는 것
+	: 과거의 방식
+** CSR + SSR 혼용방식
+	: CSR과 SSR의 장점을 섞어서 함께 사용하는 것
+	: Next.js, Nust.js, Gatsby, SvelteKit, Angular Univeral
+
+< Database >
+1. 관계형 DB (RDBMS : Relational Database Management System)
+	: MySQL, 오라클, MsSQL, Postgre, 마리아...
+2. 비관계형 DB
+	: ** 문서형DB, 그래프DB, Key-Value DB
+	: 문서형DB = No-SQL 데이터베이스	
+	: "Mongo DB"
+
+데이터베이스 ORM (Object-Relational Mapping)
+	: 자바/스프링의 ORM = JPA
+JPA (Java Persistence API)
+	: 자바의 객체와 관계형 DB의 테이블을 매핑하는 역할
+
+JDBC (Java Database Connectivity)
+	: 자바와 데이터베이스간의 SQL연결을 돕는 역할
+
+inf learn 김영한 스프링 입문 무료강의
+
+< 스프링/스프링부트 >
+	- 의존성 주입 (Denpendency Injection = DI)
+	- IOC Container (Inverse Of Control) = 제어의 역전
+	- Auto writing
+	- Auto Configuration
+	- REST API
+	- Maven / Gradle
+	- JPA / Hibernate
+	- Docker / Kubernetes
+
+http://start.spring.io/
+Project-Maven, Language-Java, SpringBoot-3.1.5
+group-com.이름(아무거나), artiface-프로젝트이름, package-Jar,
+Java-버전,
+	cmd에서 java -version 확인
+	java jdk download-window-x64 MSI Installer
+dependencies-spring web (다 소문자)
+압축 푼 걸 spring 폴더 따로 만들어서 옮기기
+이클립스 실행하고 workspace경로 스프링으로 변경
+File - import - maven입력 - existing maven projects - test폴더선택
+오류 뜨는 거 쌤이 해주심
+Application.java 우클릭 run as java application
+http://localhost:8080/
+
+@RestController ( restAPI 응답, View를 거치지 않음 ) - control누르고 클릭하면 
+ctrl+spacebar 자동완성 (import 자동완성)
+@GetMapping() (Get메소드를 맵핑)
+
+class 를 bean이라고 부름
+Bean
+	: 스프링이 관리하는 모든 객체는 Bean
+	: 관리하는..의 의미는 스프링의 IOC container가 의존성(Dependency)을 모두 관리한다.

@@ -1,0 +1,33 @@
+<Springboot>
+1. CRUD 구현(JDBC는 아직 안함, JPA로 구현)
+(JPA는 ORM이다 =>오브잭트 릴레이셔널 맵핑(관계형 데이터베이스)
+(스프링의 가장 유명한 ORM이 JPA)
+(JDBC는 자바에만 있음)
+
+2. 스프링/ 스프링부트의 기본 구조 학습
+	Client <=> Controller, Service, Repository <=> DB
+			Model,(View)
+
+3. 스프링/스프링부트의 핵심원리.. 맛만 봄!!
+: Dependency Injection 의존성 주입(DI)
+:Inverse of Control 제어의 역전(Ioc)
+:Auto Configuration 자동 설정
+
+4. 데이터베이스 설치 (MySQL, Workbench)
+
+5. Rest API 만들고 컨트롤하기
+: Client의 리액트 => Backend의 스프링(통신)
+: postman(Rest API를 테스트 해보기 위해 사용)
+
+
+
+
+
+스프링은 매우 빠르고 퍼포먼스가 좋기 때문에 이커머스(온라인쇼핑)에서 많이 쓰임
+여러 기능들이 많이 추가 되다보면 매우 무겁고 쓰기 어려워짐
+
+포스트맨도 다르기 까다로워 이력서에 한줄 넣어도 됨
+
+의존성주입=>오토와이어드라는 어노테이션을 이용해 의존성 주입을 쉽게 할 수 있도록 함(싱글턴) (DI)
+제어의 역전=>(IoC)
+오토컨피규레이션(자동설정)=>스프링부트의 핵심 원리(pom.xml)

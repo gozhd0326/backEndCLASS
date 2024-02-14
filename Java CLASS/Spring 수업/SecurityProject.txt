@@ -1,0 +1,23 @@
+artifact id = securityproject
+패키지선택 = web, mysql dirver, jpa, devtools,
+	    // "spring-boot-starter-validation"
+
+폴더구조(패키지구조)
+common - dto
+	- exception
+	- status -Enum(이넘):Gender
+ 
+member - controller : MemberController
+	- model : Member
+	- repository : MemberRepository
+	- service : MemberService
+	- dto : MemberDto
+	
+데이터베이스 이름 = membership
+
+**Enum (ex) HttpStatus.OK , HttpStatus.CREATED 에서 OK와 CREATE가 이넘임.
+(모두 대문자로 입력해야 됨.)
+** 이넘을 따로 만들어 놓을 경우 추가나 수정이 불가능함. 미리 정해서 모아놓음(그룹화). 그 안에서 선택해서 사용할 수 있도록 함.(딱 가짓수가 정해져있는 것들에 많이 사용)
+=>데이터 유효성 때문에 사용.(미리 선언된 것 그 외에 데이터가 기록되는 것을 막을 수 있음.)(잘못된 데이터를 입력할 여지를 막음)
+
+**LocalDate도 비슷한 맥락임.(다른 것은 아예 쓸 수가 없음.)

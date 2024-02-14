@@ -1,0 +1,14 @@
+1. 드라이버와 jpa를 설치(pom.xml) 디펜던시 설정
+- springdatajpa
+- mysqlconecter j
+
+2.mysql 워크벤치 설치
+
+3. mysql 서버 설치
+
+4. 애플리케이션.프로퍼티스에서 설정
+
+locallhost:8080/api/employee
+=>http 주소(프론트엔드)
+port 3307
+=> 백그라운드(백엔드)
