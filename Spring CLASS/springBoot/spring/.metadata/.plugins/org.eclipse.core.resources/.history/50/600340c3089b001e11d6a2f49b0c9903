@@ -1,0 +1,41 @@
+package com.dw.discord.dto;
+
+
+// backEnd가 frontEnd 개발자에게 편리함을 주기 위함(에러 케이스를 최대한 case by case대로 넘겨줌)
+// 약속된 응답형태로 에러 메세지를 보냄
+// 만드는 것은 아주 좋은 습관임
+public class BaseResponse<T> {
+// <T>는 제네릭 문법임
+	
+	private String resultCode;
+	private T data; //type의 약자임!
+	private String message;
+	
+	
+	public BaseResponse(String resultCode, T data, String message) {
+		super();
+		this.resultCode = resultCode;
+		this.data = data;
+		this.message = message;
+	}
+	public String getResultCode() {
+		return resultCode;
+	}
+	public void setResultCode(String resultCode) {
+		this.resultCode = resultCode;
+	}
+	public T getData() {
+		return data;
+	}
+	public void setData(T data) {
+		this.data = data;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	
+}

@@ -1,0 +1,5 @@
+package com.dw.discord.service;
+
+public interface MemberService {
+
+}

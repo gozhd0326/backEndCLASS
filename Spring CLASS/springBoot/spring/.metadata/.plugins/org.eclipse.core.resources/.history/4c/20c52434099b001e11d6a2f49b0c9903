@@ -1,0 +1,5 @@
+package com.dw.discord.controller;
+
+public class MemberController {
+
+}

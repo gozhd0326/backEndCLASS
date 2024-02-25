@@ -1,0 +1,37 @@
+package com.dw.discord.exception;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.dw.discord.dto.BaseResponse;
+import com.dw.discord.enumStatus.ResultCode;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+// 익셉션의 진짜 내용물!
+// 각 예외 사항을 어떻게 처리하겠느냐(커스텀이 붙었기 때문에 개발자가 직접 마음대로 정한 것임)
+@Order(Ordered.HIGHEST_PRECEDENCE) // 컨트롤러 어드바이스가 여러 개 있을 수도 있는데 그 중에 우선순위를 정해놓기 위해 쓰임!
+@ControllerAdvice // 익셉션핸들러는 내가 만든 것이니까 이걸로 예외 처리를 대신하겠다고 스프링에게 얘기함!
+public class CustomExceptionHandler {
+	    @ExceptionHandler(MethodArgumentNotValidException.class)
+	    protected ResponseEntity<BaseResponse<Map<String, String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+	        Map<String, String> errors = new HashMap<String, String>();
+	        ex.getBindingResult().getAllErrors().forEach(error -> {
+	            String fieldName = ((FieldError) error).getField();
+	            String errorMessage = error.getDefaultMessage();
+	            errors.put(fieldName, errorMessage != null ? errorMessage
+	                    : "No Exception Message");
+	        });
+	        return new ResponseEntity<>(new BaseResponse<>(
+	                ResultCode.ERROR.name(),
+	                errors,
+	                ResultCode.ERROR.getMsg()
+	        ), HttpStatus.BAD_REQUEST);
+}
+}

@@ -1,0 +1,5 @@
+package com.dw.discord.repository;
+
+public class MemberRepository {
+
+}

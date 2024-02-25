@@ -1,0 +1,8 @@
+package com.dw.discord.model;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Member {
+
+}

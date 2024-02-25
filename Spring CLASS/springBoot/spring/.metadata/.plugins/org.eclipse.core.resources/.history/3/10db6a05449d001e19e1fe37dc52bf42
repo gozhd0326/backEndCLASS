@@ -1,0 +1,5 @@
+package com.dw.discord.exception;
+
+public class InvalidRequestException {
+
+}

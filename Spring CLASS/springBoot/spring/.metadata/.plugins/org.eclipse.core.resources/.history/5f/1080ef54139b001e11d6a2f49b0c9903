@@ -1,0 +1,12 @@
+package com.dw.discord.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.dw.discord.model.Member;
+
+public interface MemberRepository extends JpaRepository<Member, Long> {
+	
+	//대소문자는 상관 없음 findBy~
+	Member findByLoginId(String loginId); 
+
+}

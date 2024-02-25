@@ -1,0 +1,3 @@
+@PostConstruct 
+initialize ===>초기화하는 거라고 생각하면됨.
+

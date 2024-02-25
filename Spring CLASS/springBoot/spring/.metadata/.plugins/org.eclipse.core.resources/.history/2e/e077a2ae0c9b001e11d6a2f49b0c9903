@@ -1,0 +1,14 @@
+package com.dw.discord.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@CrossOrigin(origins="http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+// 출처 동일 정책 // 보내는 곳이 같은 경우에만 받아줌 
+//원래는 localhost 8080만 받아줘야 하는데 localhost 3000도 받아주자(get과 post,delete 메소드)
+public class MemberController {
+	
+	
+}

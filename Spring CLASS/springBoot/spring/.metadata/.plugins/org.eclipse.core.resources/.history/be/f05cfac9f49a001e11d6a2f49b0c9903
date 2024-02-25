@@ -1,0 +1,5 @@
+package com.dw.discord.enumStatus;
+
+public enum Gender {
+
+}

@@ -1,0 +1,5 @@
+package com.dw.discord.service.serviceImpl;
+
+public class MemberServiceImpl {
+
+}

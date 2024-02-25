@@ -1,0 +1,29 @@
+package com.dw.discord.service.serviceimpl;
+
+import org.springframework.stereotype.Service;
+
+import com.dw.discord.dto.MemberDto;
+import com.dw.discord.dto.MemberLoginDto;
+import com.dw.discord.service.MemberService;
+
+import jakarta.transaction.Transactional;
+
+//싱글턴으로 관리하는 녀석들 = bean (퍼포먼스가 좋다)
+
+@Service //bean으로 만들어줌 이 안에 @Component가 있음
+@Transactional //DataBase와 관련이 있음 //서비스에 호출을 부탁한다
+public class MemberServiceImpl implements MemberService{
+
+	@Override
+	public String signUp(MemberDto memberDto) {
+		
+		return null;
+	}
+
+	@Override
+	public String loign(MemberLoginDto memberLoginDto) {
+		
+		return null;
+	}
+
+}

@@ -1,0 +1,54 @@
+package com.dw.discord.jwtauthority.jwt;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+public class JwtFilter extends GenericFilterBean {  // GenericFilterBean을 상속받음
+
+   private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class); // jwtfilter를 클래스로 지정하여 클래스만 로깅할 수 있음.
+   //코드가 정상적으로 실행되고 있는지 확인하기 위해 로깅을 사용 // 로깅의 레벨을 지정한다.(인포레벨과 디버그레벨)
+   // 인포레벨 : 아주 중요하고 굵직한 것들만 // 디버그레벨 : 자잘한 것들만 		// 로깅하는 도구(툴) : import org.slf4j.Logger;
+   public static final String AUTHORIZATION_HEADER = "Authorization"; // 실제로 토큰에 위치해야 하는 해당 키(헤더의 키)
+   private TokenProvider tokenProvider;
+   public JwtFilter(TokenProvider tokenProvider) {
+      this.tokenProvider = tokenProvider;
+   }
+
+   @Override // servletRequest를 받아 옴, servletResponse은 비어있어 여기에 담을 것임
+   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+      HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+      String jwt = resolveToken(httpServletRequest);
+      String requestURI = httpServletRequest.getRequestURI();
+
+      if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+         Authentication authentication = tokenProvider.getAuthentication(jwt);
+         SecurityContextHolder.getContext().setAuthentication(authentication);
+         logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI); // 디버그 레벨
+      } else {
+         logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
+      }
+
+      filterChain.doFilter(servletRequest, servletResponse);
+   }
+
+   private String resolveToken(HttpServletRequest request) {
+      String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
+      if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+         return bearerToken.substring(7);
+      }
+
+      return null;
+   }
+}

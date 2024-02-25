@@ -1,0 +1,28 @@
+package com.dw.discord.service.serviceimpl;
+
+import org.springframework.stereotype.Service;
+
+import com.dw.discord.dto.MemberDto;
+import com.dw.discord.dto.MemberLoginDto;
+import com.dw.discord.service.MemberService;
+
+import jakarta.transaction.Transactional;
+
+
+@Service
+@Transactional //DataBase와 관련이 있음 //서비스에 호출을 부탁한다
+public class MemberServiceImpl implements MemberService{
+
+	@Override
+	public String signUp(MemberDto memberDto) {
+		
+		return null;
+	}
+
+	@Override
+	public String loign(MemberLoginDto memberLoginDto) {
+		
+		return null;
+	}
+
+}

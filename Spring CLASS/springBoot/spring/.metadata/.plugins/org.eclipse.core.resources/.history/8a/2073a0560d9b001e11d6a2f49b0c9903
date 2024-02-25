@@ -1,0 +1,30 @@
+package com.dw.discord.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dw.discord.dto.BaseResponse;
+import com.dw.discord.dto.MemberDto;
+
+@RestController
+@CrossOrigin(origins="http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+// 출처 동일 정책 // 보내는 곳이 같은 경우에만 받아줌 
+//원래는 localhost 8080만 받아줘야 하는데 localhost 3000도 받아주자(get과 post,delete 메소드)
+public class MemberController {
+	
+	@PostMapping("/api/signup") // api 로 시작하는 것이 좋은 습관임 (백엔드에서는 api를 넣어서 사용하고 프론트에서는 api만 빼서 사용하면 좋음)
+	// 리액트 라우터에서 사용하는 주소는 페이지 주소를 url로 표현한 것(클라이언트사이드에서 보여지는 것)이고 여기서 표현한 것은 리액트에서 유즈쿼리를 사용하고 패치를 사용해서 맞춰지기 때문에 그곳에서 사용하는 api만 같으면 상관없음
+	public ResponseEntity<BaseResponse<Void>> signUp(MemberDto memberDto){
+	//원래는 <T>가 들어가야하는데 아무것도 안들어간다는 것을 의미하기 위해 <Void>를 입력
+	return new ResponseEntity<BaseResponse<Void>>(
+			new BaseResponse<Void>(
+					"SUCCESS",
+					null,
+					"가입이 완료되었습니다."),
+			HttpStatus.CREATED);
+	}
+}

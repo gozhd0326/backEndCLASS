@@ -1,0 +1,70 @@
+package com.dw.discord.jwtauthority.config;
+
+
+import com.dw.discord.jwtauthority.jwt.*;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.apache.tomcat.jni.SSLConf.apply;
+
+@Configuration // springsecurity를 사용할 것임 // 환경설정 클래스임을 명시하는 역할
+@EnableWebSecurity // 웹과 관련된 환경설정과 관련이 있음. // 웹 기반 보안을 활성화
+@EnableMethodSecurity // 메소드 수준의 보안을 활성화
+public class SecurityConfig {
+    private final TokenProvider tokenProvider; // 토큰을 생성해서 주는 클래스
+    //    private final CorsFilter corsFilter; 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint; // 예외 설정 (인증 실패) ex) 패스워드 실패
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler; // 예외 설정 (인가 실패) ex) admin만 들어갈 수 있는 자리에 user가 들어옴
+
+    public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                          JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+        super();
+        this.tokenProvider = tokenProvider;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("/api/authenticate").permitAll()
+                        .requestMatchers("/api/signup").permitAll()
+                        .requestMatchers("/api/basic/signup").permitAll()
+                        .anyRequest().authenticated()
+                )
+
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS))
+
+                .formLogin(formLoginCustomizer -> formLoginCustomizer.defaultSuccessUrl("/"))
+
+                .addFilterBefore(
+                        new JwtFilter(tokenProvider),
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
+        return http.build();
+    }
+}

@@ -1,0 +1,8 @@
+package com.dw.discord.dto;
+
+
+//backEnd가 frontEnd 개발자에게 편리함을 주기 위함(에러 케이스를 최대한 case by case대로 넘겨줌)
+// 만드는 것은 아주 좋은 습관임
+public class BaseResponse {
+
+}
